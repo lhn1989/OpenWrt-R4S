@@ -30,4 +30,4 @@ git branch --set-upstream-to=origin/master master
 mv luci-app-openclash ../package/
 cd ..
 rm -rf openclash
-echo " installation is complete"
+echo "OpenClash installation is complete"
