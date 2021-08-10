@@ -21,7 +21,6 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
 # Add openclash
-echo "Start to install OpenClash"
 mkdir openclash
 cd openclash
 git init
@@ -32,4 +31,3 @@ git pull --depth 1 origin master
 mv luci-app-openclash ../package/
 cd ..
 rm -rf openclash
-echo "OpenClash installation is complete"
