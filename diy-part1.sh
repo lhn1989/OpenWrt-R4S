@@ -15,7 +15,6 @@ set -v
 
 # Add a feed source
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-echo 'src-git dockerman https://github.com/lisaac/luci-app-dockerman' >>feeds.conf.default
 
 # Add openclash
 mkdir openclash
