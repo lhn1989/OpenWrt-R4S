@@ -86,7 +86,7 @@ jobs:
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
           git commit -am "Automated commit"
-          git push
+          git push || exit 0
           
     - name: Trigger build
       uses: peter-evans/repository-dispatch@v2
