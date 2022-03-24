@@ -91,7 +91,7 @@ jobs:
       uses: peter-evans/repository-dispatch@v2
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
-        event-type: checker
+        event-type: Update Checker
           
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
