@@ -17,6 +17,8 @@ env:
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [my-event]
 #  schedule:
 #    - cron: 0 */18 * * *
 
@@ -46,10 +48,10 @@ jobs:
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
-      uses: peter-evans/repository-dispatch@v1
+      uses: peter-evans/repository-dispatch@v2
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
-        event-type: Source Code Update
+        event-type: build
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
