@@ -88,6 +88,12 @@ jobs:
           git commit -am "Automated commit"
           git push
           
+    - name: Trigger build
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
+        event-type: update-checker
+          
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       with:
