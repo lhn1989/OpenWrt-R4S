@@ -81,7 +81,7 @@ jobs:
     - name: Git Commit
       run: |
           cd openwrt
-          cp .config $GITHUB_WORKSPACE
+          grep -v 'is not set' .config > $GITHUB_WORKSPACE/.config
           cd $GITHUB_WORKSPACE
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
