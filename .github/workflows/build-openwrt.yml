@@ -25,6 +25,8 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
+  KERNEL_CONFIG_FILE: config-5.15
+  KERNEL_CONFIG_PATH: openwrt/target/linux/rockchip/armv8
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -79,6 +81,7 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e $KERNEL_CONFIG_FILE ] && mv $KERNEL_CONFIG_FILE $KERNEL_CONFIG_PATH/$KERNEL_CONFIG_FILE
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
