@@ -13,6 +13,7 @@
 # openclash var
 OPENCLASH_DIR="openclash"
 OPENCLASH_GIT="https://github.com/vernesong/OpenClash.git"
+OPENCLASH_SRC="luci-app-openclash"
 OPENCLASH_BRANCH="dev"
 
 # git shallow clone
@@ -33,7 +34,7 @@ set -x
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 
 # Add openclash
-shallowClone $OPENCLASH_DIR $OPENCLASH_GIT $OPENCLASH_BRANCH
+shallowClone $OPENCLASH_DIR $OPENCLASH_GIT $OPENCLASH_SRC $OPENCLASH_BRANCH
 mv luci-app-openclash ../package/
 cd ..
 rm -rf openclash
