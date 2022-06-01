@@ -10,20 +10,30 @@
 # Description: OpenWrt DIY script part 1 (Before Update feeds)
 #
 
+# openclash var
+OPENCLASH_DIR="openclash"
+OPENCLASH_GIT="https://github.com/vernesong/OpenClash.git"
+OPENCLASH_BRANCH="dev"
+
+# git shallow clone
+shallowClone(){
+    mkdir $1
+    cd $1
+    git init
+    git remote add origin $2
+    git config core.sparsecheckout true
+    echo $3 >> .git/info/sparse-checkout
+    git pull --depth 1 origin $4
+}
+
 # Print Commands
-set -v
+set -x
 
 # Add a feed source
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 
 # Add openclash
-mkdir openclash
-cd openclash
-git init
-git remote add origin https://github.com/vernesong/OpenClash.git
-git config core.sparsecheckout true
-echo "luci-app-openclash" >> .git/info/sparse-checkout
-git pull --depth 1 origin dev
+shallowClone $OPENCLASH_DIR $OPENCLASH_GIT $OPENCLASH_BRANCH
 mv luci-app-openclash ../package/
 cd ..
 rm -rf openclash
