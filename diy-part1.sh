@@ -18,8 +18,8 @@ OPENCLASH_BRANCH="dev"
 
 # git shallow clone
 shallowClone(){
-    mkdir $1
-    cd $1
+    mkdir -p /workdir/$1
+    cd /workdir/$1
     git init
     git remote add origin $2
     git config core.sparsecheckout true
@@ -30,11 +30,10 @@ shallowClone(){
 # Print Commands
 set -x
 
-# Add a feed source
-echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+# Add SSR
+echo "src-git helloworld https://github.com/fw876/helloworld" >>feeds.conf.default
 
 # Add openclash
 shallowClone $OPENCLASH_DIR $OPENCLASH_GIT $OPENCLASH_SRC $OPENCLASH_BRANCH
-mv luci-app-openclash ../package/
-cd ..
-rm -rf openclash
+mv /workdir/$OPENCLASH_DIR/$OPENCLASH_SRC /workdir/openwrt/package/
+rm -rf /workdir/$OPENCLASH_DIR
