@@ -22,7 +22,7 @@ on:
       patch_kernel:
         description: 'Patch Kernel'
         required: false
-        default: 'false'
+        type: boolean
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -90,7 +90,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
     - name: Patch Kernel Config
-      if: github.event.inputs.patch_kernel == 'true'
+      if: github.event.inputs.patch_kernel
       run: |
         cd openwrt
         [ -e $KERNEL_CONFIG_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$KERNEL_CONFIG_PATCH
