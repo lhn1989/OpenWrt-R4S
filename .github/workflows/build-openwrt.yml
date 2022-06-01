@@ -25,7 +25,7 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
-  KERNEL_CONFIG_FILE: config-5.15
+  KERNEL_CONFIG_PATCH: 0001-kernel-patch.patch
   KERNEL_CONFIG_PATH: openwrt/target/linux/rockchip/armv8
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
@@ -81,10 +81,21 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        [ -e $KERNEL_CONFIG_FILE ] && mv $KERNEL_CONFIG_FILE $KERNEL_CONFIG_PATH/$KERNEL_CONFIG_FILE
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+        
+    - name: Patch Kernel Config
+      if: github.event.inputs.ssh != 'true' && github.event.inputs.ssh == 'false' && !contains(github.event.action, 'ssh')
+      run: |
+        cd openwrt
+        [ -e $KERNEL_CONFIG_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$KERNEL_CONFIG_PATCH
+
+    - name: Prepare Kernel Config
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      run: |
+        cd openwrt
+        make prepare_kernel_conf
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -92,6 +103,17 @@ jobs:
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+    - name: Git Commit Kernel Config
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      run: |
+          git config --global user.name 'lhn1989'
+          git config --global user.email 'lhn1989@users.noreply.github.com'
+          cd openwrt
+          modify = $(git status --porcelain -uno | grep target/linux/rockchip/armv8/config | awk -F' ' '{print $2}')
+          [ -n $modify ] && git commit $modify -m "kernel patch" && git format-patch -1 && cp 0001-kernel-patch.patch $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
+          [ -n "$(git status --porcelain -uno)" ] && git commit -am "Automated commit" && git push || echo 'No change'
 
     - name: Download package
       id: package
