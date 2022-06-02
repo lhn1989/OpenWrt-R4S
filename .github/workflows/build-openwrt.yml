@@ -18,7 +18,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: 'false'
+        type: boolean
       patch_kernel:
         description: 'Patch Kernel'
         required: false
@@ -96,20 +96,20 @@ jobs:
         [ -e $KERNEL_CONFIG_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$KERNEL_CONFIG_PATCH
 
     - name: Prepare Kernel Config
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
       run: |
         cd openwrt
         make prepare_kernel_conf
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: Git Commit Kernel Config
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
       run: |
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
