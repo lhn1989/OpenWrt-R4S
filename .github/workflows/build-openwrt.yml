@@ -52,6 +52,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        echo 
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
@@ -90,26 +91,26 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
     - name: Patch Kernel Config
-      if: github.event.inputs.patch_kernel
+      if: github.event.inputs.patch_kernel == true
       run: |
         cd openwrt
         [ -e $KERNEL_CONFIG_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$KERNEL_CONFIG_PATCH
 
     - name: Prepare Kernel Config
-      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh == true || contains(github.event.action, 'ssh')
       run: |
         cd openwrt
         make prepare_kernel_conf
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
-      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh == true || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: Git Commit Kernel Config
-      if: github.event.inputs.ssh || contains(github.event.action, 'ssh')
+      if: github.event.inputs.ssh == true || contains(github.event.action, 'ssh')
       run: |
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
