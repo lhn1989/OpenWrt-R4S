@@ -1,6 +1,6 @@
-From 57285b187f37d387cea1732e56cfbc93229ffa4a Mon Sep 17 00:00:00 2001
+From a786006a0c37022860a118ce5ed8108bb6a3d66e Mon Sep 17 00:00:00 2001
 From: lhn1989 <lhn1989@users.noreply.github.com>
-Date: Wed, 1 Jun 2022 21:47:14 +0800
+Date: Thu, 2 Jun 2022 18:41:11 +0800
 Subject: [PATCH] kernel patch
 
 ---
@@ -322,4 +322,5 @@ index e9d35111d..332a06e0b 100644
  CONFIG_USB_DWC3=y
  CONFIG_USB_DWC3_HOST=y
 -- 
-2.25.1
+2.36.1
+
