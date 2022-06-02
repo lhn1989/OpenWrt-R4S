@@ -115,7 +115,7 @@ jobs:
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
           cd openwrt
-          modify = $(git status --porcelain -uno | grep target/linux/rockchip/armv8/config | awk -F' ' '{print $2}')
+          modify=$(git status --porcelain -uno | grep target/linux/rockchip/armv8/config | awk -F' ' '{print $2}')
           [ -n $modify ] && git commit $modify -m "kernel patch" && git format-patch -1 && cp 0001-kernel-patch.patch $GITHUB_WORKSPACE
           cd $GITHUB_WORKSPACE
           [ -n "$(git status --porcelain -uno)" ] && git commit -am "Automated commit" && git push || echo 'No change'
