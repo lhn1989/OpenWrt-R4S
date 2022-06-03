@@ -13,15 +13,8 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
-  KERNEL_CONFIG_FILE: config-5.15
-  KERNEL_CONFIG_PATH: target/linux/rockchip/armv8
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
-  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -73,7 +66,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
-    - name: Download package
+    - name: Prepare Kernel Config
       id: package
       run: |
         cd openwrt
@@ -86,14 +79,15 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       
-    - name: Git Commit
+    - name: Git Commit Kernel Config
       run: |
           cd openwrt
           cp .config $GITHUB_WORKSPACE
-          cp $KERNEL_CONFIG_PATH/$KERNEL_CONFIG_FILE $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
+          modify=$(git status --porcelain -uno | grep target/linux/rockchip/armv8/config | awk -F' ' '{print $2}')
+          [ -n $modify ] && git commit $modify -m "kernel patch" && git format-patch -1 && cp 0001-kernel-patch.patch $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
           [ -n "$(git status --porcelain -uno)" ] && git commit -am "Automated commit" && git push || echo 'No change'
           
     - name: Trigger build
