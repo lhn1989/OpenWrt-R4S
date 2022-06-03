@@ -77,9 +77,11 @@ jobs:
       run: |
           cd openwrt
           cp .config $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE
           git config --global user.name 'lhn1989'
           git config --global user.email 'lhn1989@users.noreply.github.com'
+          modify=$(git status --porcelain -uno | grep target/linux/rockchip/modules.mk | awk -F' ' '{print $2}')
+          [ -n $modify ] && git commit $modify -m "DRM PANFROST" && git format-patch -1 && cp 0001-DRM-PANFROST.patch $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
           [ -n "$(git status --porcelain -uno)" ] && git commit -am "Automated commit" && git push || echo 'No change'
           
     - name: Trigger build
