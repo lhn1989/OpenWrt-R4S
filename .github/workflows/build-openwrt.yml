@@ -86,7 +86,6 @@ jobs:
         
     - name: Patch Drm Panfrost
       run: |
-        cd openwrt
         [ -e $DRM_PANFROST_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$DRM_PANFROST_PATCH
 
     - name: SSH connection to Actions
