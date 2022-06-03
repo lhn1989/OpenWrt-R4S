@@ -1,0 +1,37 @@
+From 32927663379ce8f97893b7cc87b204456477819e Mon Sep 17 00:00:00 2001
+From: lhn1989 <lhn1989@users.noreply.github.com>
+Date: Fri, 3 Jun 2022 13:34:40 +0800
+Subject: [PATCH] DRM PANFROST
+
+---
+ target/linux/rockchip/modules.mk | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/target/linux/rockchip/modules.mk b/target/linux/rockchip/modules.mk
+index 4ad49b57e..44bbbd032 100644
+--- a/target/linux/rockchip/modules.mk
++++ b/target/linux/rockchip/modules.mk
+@@ -65,3 +65,21 @@ define KernelPackage/gpu-lima/description
+ endef
+
+ $(eval $(call KernelPackage,gpu-lima))
++
++define KernelPackage/drm-panfrost
++  SUBMENU:=$(VIDEO_MENU)
++  TITLE:=DRM support for ARM Mali Midgard/Bifrost GPUs
++  DEPENDS:=@(TARGET_rockchip||TARGET_sunxi) +kmod-drm
++  KCONFIG:=CONFIG_DRM_PANFROST
++  FILES:= \
++       $(LINUX_DIR)/drivers/gpu/drm/panfrost/panfrost.ko \
++       $(LINUX_DIR)/drivers/gpu/drm/scheduler/gpu-sched.ko
++  AUTOLOAD:=$(call AutoProbe,panfrost)
++endef
++
++define KernelPackage/drm-panfrost/description
++  DRM driver for ARM Mali Midgard (T6xx, T7xx, T8xx) and
++  Bifrost (G3x, G5x, G7x) GPUs
++endef
++
++$(eval $(call KernelPackage,drm-panfrost))
+-- 
+2.36.1
