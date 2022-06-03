@@ -86,6 +86,8 @@ jobs:
         
     - name: Patch Drm Panfrost
       run: |
+        git config --global user.name 'lhn1989'
+        git config --global user.email 'lhn1989@users.noreply.github.com'
         [ -e $DRM_PANFROST_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$DRM_PANFROST_PATCH
 
     - name: SSH connection to Actions
