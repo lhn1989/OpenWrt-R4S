@@ -1,6 +1,6 @@
-From 32927663379ce8f97893b7cc87b204456477819e Mon Sep 17 00:00:00 2001
+From a3b667c24449c5a19fb48580be758a00d6aaf8b4 Mon Sep 17 00:00:00 2001
 From: lhn1989 <lhn1989@users.noreply.github.com>
-Date: Fri, 3 Jun 2022 13:34:40 +0800
+Date: Fri, 3 Jun 2022 15:11:17 +0800
 Subject: [PATCH] DRM PANFROST
 
 ---
@@ -13,7 +13,7 @@ index 4ad49b57e..44bbbd032 100644
 +++ b/target/linux/rockchip/modules.mk
 @@ -65,3 +65,21 @@ define KernelPackage/gpu-lima/description
  endef
-
+ 
  $(eval $(call KernelPackage,gpu-lima))
 +
 +define KernelPackage/drm-panfrost
@@ -22,8 +22,8 @@ index 4ad49b57e..44bbbd032 100644
 +  DEPENDS:=@(TARGET_rockchip||TARGET_sunxi) +kmod-drm
 +  KCONFIG:=CONFIG_DRM_PANFROST
 +  FILES:= \
-+       $(LINUX_DIR)/drivers/gpu/drm/panfrost/panfrost.ko \
-+       $(LINUX_DIR)/drivers/gpu/drm/scheduler/gpu-sched.ko
++  	$(LINUX_DIR)/drivers/gpu/drm/panfrost/panfrost.ko \
++	$(LINUX_DIR)/drivers/gpu/drm/scheduler/gpu-sched.ko
 +  AUTOLOAD:=$(call AutoProbe,panfrost)
 +endef
 +
@@ -35,3 +35,4 @@ index 4ad49b57e..44bbbd032 100644
 +$(eval $(call KernelPackage,drm-panfrost))
 -- 
 2.36.1
+
