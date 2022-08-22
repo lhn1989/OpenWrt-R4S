@@ -19,6 +19,10 @@ on:
         description: 'SSH connection to Actions'
         required: false
         type: boolean
+      skip_patch:
+        description: 'Skip Drm Panfrost Patch'
+        required: false
+        type: boolean
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -85,6 +89,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
     - name: Patch Drm Panfrost
+      if: github.event.inputs.skip_patch != 'true'
       run: |
         git config --global user.name 'lhn1989'
         git config --global user.email 'lhn1989@users.noreply.github.com'
