@@ -2,12 +2,6 @@ name: Update Config
 
 on:
   workflow_dispatch:
-    inputs:
-      skip_patch:
-        description: 'Skip Drm Panfrost Patch'
-        default: true
-        required: false
-        type: boolean
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -67,13 +61,6 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-
-    - name: Patch Drm Panfrost
-      if: github.event.inputs.skip_patch != 'true'
-      run: |
-        git config --global user.name 'lhn1989'
-        git config --global user.email 'lhn1989@users.noreply.github.com'
-        [ -e $DRM_PANFROST_PATCH ] && cd openwrt && git am $GITHUB_WORKSPACE/$DRM_PANFROST_PATCH
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
