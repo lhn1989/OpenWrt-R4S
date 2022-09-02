@@ -5,6 +5,7 @@ on:
     inputs:
       skip_patch:
         description: 'Skip Drm Panfrost Patch'
+        default: false
         required: false
         type: boolean
 
