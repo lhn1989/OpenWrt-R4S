@@ -21,6 +21,7 @@ on:
         type: boolean
       skip_patch:
         description: 'Skip Drm Panfrost Patch'
+        default: true
         required: false
         type: boolean
 
